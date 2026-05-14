@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 210 29% 16%;
+    --card: 0 0% 100%;
+    --card-foreground: 210 29% 16%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 210 29% 16%;
+
+    /* Azul marinho principal — #002856 */
+    --primary: 208 100% 17%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Azul marinho escuro */
+    --secondary: 214 64% 20%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+
+    --accent: 210 40% 96%;
+    --accent-foreground: 208 100% 17%;
+
+    /* Vermelho de ação — #EA0029 */
+    --destructive: 350 100% 46%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 208 100% 17%;
+    --radius: 0.5rem;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5% 26%;
+    --sidebar-primary: 208 100% 17%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 5% 96%;
+    --sidebar-accent-foreground: 240 6% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217 91% 60%;
+
+    /* Brand tokens */
+    --brand-navy: 208 100% 17%;
+    --brand-navy-dark: 214 64% 20%;
+    --brand-red: 350 100% 46%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: "Inter", sans-serif;
+  }
+}
