@@ -1,55 +1,65 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ChevronDown } from "lucide-react";
 
 const navItems = [
-  { label: "BLOG", href: "#" },
-  { label: "PRODUTOS", href: "#" },
-  { label: "SUPORTE TÉCNICO", href: "#" },
-  { label: "FALE CONOSCO", href: "#" },
+  { label: "Blog", href: "#" },
+  { label: "Produtos", href: "#", hasDropdown: true },
+  { label: "Suporte Técnico", href: "#" },
+  { label: "Fale Conosco", href: "#" },
 ];
 
 export const Header = () => {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="bg-white border-b sticky top-0 z-50 shadow-sm">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
-          <Link to="/" className="flex items-center">
-            <img
-              src="/logo-filtros-brasil.svg"
-              alt="Filtros Brasil"
-              className="h-8 w-auto"
-            />
+    <header className="bg-white sticky top-0 z-50" style={{ boxShadow: "var(--fb-shadow-sm)", borderBottom: "1px solid var(--fb-mid-gray)" }}>
+      <div className="container mx-auto px-6">
+        <div className="flex items-center justify-between h-20">
+          <Link to="/" className="flex items-center flex-shrink-0">
+            <img src="/logo-filtros-brasil.svg" alt="Filtros Brasil" className="h-9 w-auto" />
           </Link>
 
-          <nav className="hidden lg:flex items-center gap-6">
+          <nav className="hidden lg:flex items-center gap-1">
             {navItems.map((item) => (
-              <a key={item.label} href={item.href} className="text-xs font-semibold text-foreground hover:text-brand-navy transition-colors tracking-wide">
+              <a
+                key={item.label}
+                href={item.href}
+                className="flex items-center gap-1 px-4 py-2 text-[11px] font-semibold uppercase tracking-widest transition-colors hover:text-[#E3000F]"
+                style={{ color: "var(--fb-blue)" }}
+              >
                 {item.label}
+                {item.hasDropdown && <ChevronDown className="h-3 w-3" />}
               </a>
             ))}
           </nav>
 
           <div className="flex items-center gap-3">
-            <Link to="/admin" className="text-xs text-muted-foreground hover:text-brand-navy transition-colors hidden md:block">
-              Acesso Admin
+            <Link
+              to="/admin"
+              className="hidden md:inline-flex text-[11px] font-semibold uppercase tracking-widest transition-colors hover:text-[#E3000F]"
+              style={{ color: "var(--fb-slate-gray)" }}
+            >
+              Área Admin
             </Link>
             <button className="lg:hidden p-2" onClick={() => setOpen(!open)}>
-              {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              {open ? <X className="h-5 w-5" style={{ color: "var(--fb-blue)" }} /> : <Menu className="h-5 w-5" style={{ color: "var(--fb-blue)" }} />}
             </button>
           </div>
         </div>
 
         {open && (
-          <div className="lg:hidden border-t py-4 space-y-3">
+          <div className="lg:hidden border-t py-4 space-y-1" style={{ borderColor: "var(--fb-mid-gray)" }}>
             {navItems.map((item) => (
-              <a key={item.label} href={item.href} className="block text-sm font-medium py-1.5">
+              <a key={item.label} href={item.href}
+                className="block px-2 py-2.5 text-[11px] font-semibold uppercase tracking-widest"
+                style={{ color: "var(--fb-blue)" }}>
                 {item.label}
               </a>
             ))}
-            <Link to="/admin" className="block text-xs text-muted-foreground py-1.5">Acesso Admin</Link>
+            <Link to="/admin" className="block px-2 py-2.5 text-[11px] font-semibold uppercase tracking-widest" style={{ color: "var(--fb-slate-gray)" }}>
+              Área Admin
+            </Link>
           </div>
         )}
       </div>

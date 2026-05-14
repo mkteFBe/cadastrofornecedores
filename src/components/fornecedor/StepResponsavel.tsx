@@ -1,44 +1,31 @@
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { FornecedorFormData } from '@/types/fornecedor';
 import { User, Info } from 'lucide-react';
 
-interface StepResponsavelProps {
-  formData: FornecedorFormData;
-  onChange: (field: keyof FornecedorFormData, value: string) => void;
-  errors: Record<string, string>;
-}
+interface Props { formData: FornecedorFormData; onChange: (f: keyof FornecedorFormData, v: string) => void; errors: Record<string, string>; }
 
-export function StepResponsavel({ formData, onChange }: StepResponsavelProps) {
+export function StepResponsavel({ formData, onChange }: Props) {
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       <div>
-        <h3 className="text-base font-semibold text-foreground">Responsável pelo preenchimento</h3>
-        <p className="text-sm text-muted-foreground mt-0.5">
-          Identifique quem está preenchendo este formulário pela empresa
-        </p>
+        <h3 className="font-bold uppercase tracking-tight mb-1" style={{ fontSize: "15px", color: "var(--fb-blue)" }}>Responsável pelo Preenchimento</h3>
+        <p className="text-xs" style={{ color: "var(--fb-slate-gray)" }}>Identifique quem está preenchendo este formulário pela empresa</p>
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="responsavel">Nome do responsável</Label>
+      <div className="space-y-1.5">
+        <label className="block text-[11px] font-semibold uppercase tracking-wider" style={{ color: "var(--fb-blue)", letterSpacing: "0.05em" }}>Nome do Responsável</label>
         <div className="relative">
-          <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-          <Input
-            id="responsavel"
-            value={formData.responsavel}
-            onChange={(e) => onChange('responsavel', e.target.value)}
-            placeholder="Ex.: João da Silva"
-            className="pl-9"
-          />
+          <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: "var(--fb-slate-gray)" }} />
+          <Input value={formData.responsavel} onChange={e => onChange('responsavel', e.target.value)} placeholder="Ex.: João da Silva"
+            className="pl-9" style={{ border: "1px solid var(--fb-mid-gray)", borderRadius: "4px", fontSize: "14px", color: "var(--fb-dark-gray)" }} />
         </div>
-        <p className="text-xs text-muted-foreground">Campo opcional</p>
+        <p className="text-xs" style={{ color: "var(--fb-slate-gray)" }}>Campo opcional</p>
       </div>
 
-      <div className="flex items-start gap-3 p-4 rounded-lg bg-muted/50 border">
-        <Info className="w-4 h-4 text-muted-foreground flex-shrink-0 mt-0.5" />
-        <p className="text-xs text-muted-foreground leading-relaxed">
-          O nome do responsável é utilizado apenas para fins de contato e auditoria interna.
-          Não será divulgado a terceiros.
+      <div className="flex items-start gap-3 p-4 rounded-md" style={{ background: "var(--fb-light-gray)", border: "1px solid var(--fb-mid-gray)" }}>
+        <Info className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: "var(--fb-slate-gray)" }} />
+        <p className="text-xs leading-relaxed" style={{ color: "var(--fb-slate-gray)" }}>
+          O nome do responsável é utilizado apenas para fins de contato e auditoria interna. Não será divulgado a terceiros.
         </p>
       </div>
     </div>

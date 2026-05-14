@@ -18,44 +18,30 @@ export function FormProgress({ currentStep, totalSteps, steps }: FormProgressPro
 
           return (
             <div key={step} className="flex flex-col items-center flex-1 relative">
-              {/* Linha conectora esquerda */}
               {index > 0 && (
-                <div
-                  className={cn(
-                    'absolute top-4 right-1/2 left-0 h-px',
-                    isCompleted || isCurrent ? 'bg-brand-navy' : 'bg-border'
-                  )}
-                />
+                <div className="absolute top-3.5 right-1/2 left-0 h-px"
+                  style={{ background: isCompleted ? "var(--fb-red)" : "var(--fb-mid-gray)" }} />
               )}
-              {/* Linha conectora direita */}
               {index < steps.length - 1 && (
-                <div
-                  className={cn(
-                    'absolute top-4 left-1/2 right-0 h-px',
-                    isCompleted ? 'bg-brand-navy' : 'bg-border'
-                  )}
-                />
+                <div className="absolute top-3.5 left-1/2 right-0 h-px"
+                  style={{ background: isCompleted ? "var(--fb-red)" : "var(--fb-mid-gray)" }} />
               )}
 
-              {/* Círculo */}
               <div
-                className={cn(
-                  'relative z-10 w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold transition-all duration-200',
-                  isCompleted && 'bg-brand-navy text-white',
-                  isCurrent && 'bg-brand-navy text-white ring-4 ring-brand-navy/15',
-                  !isCompleted && !isCurrent && 'bg-white border-2 border-border text-muted-foreground'
-                )}
+                className="relative z-10 w-7 h-7 rounded-full flex items-center justify-center text-[11px] font-bold transition-all duration-200"
+                style={{
+                  background: isCompleted || isCurrent ? "var(--fb-red)" : "#fff",
+                  border: `2px solid ${isCompleted || isCurrent ? "var(--fb-red)" : "var(--fb-mid-gray)"}`,
+                  color: isCompleted || isCurrent ? "#fff" : "var(--fb-slate-gray)",
+                  boxShadow: isCurrent ? "0 0 0 3px rgba(227,0,15,0.15)" : "none",
+                }}
               >
                 {isCompleted ? <Check className="w-3.5 h-3.5" /> : stepNumber}
               </div>
 
-              {/* Label */}
               <span
-                className={cn(
-                  'mt-2 text-[11px] text-center leading-tight hidden sm:block max-w-[70px]',
-                  isCurrent ? 'text-brand-navy font-semibold' : 'text-muted-foreground',
-                  isCompleted && 'text-brand-navy'
-                )}
+                className="mt-2 text-[10px] font-semibold uppercase tracking-wider text-center hidden sm:block max-w-[68px] leading-tight"
+                style={{ color: isCurrent ? "var(--fb-red)" : isCompleted ? "var(--fb-blue)" : "var(--fb-slate-gray)" }}
               >
                 {step}
               </span>
@@ -64,10 +50,11 @@ export function FormProgress({ currentStep, totalSteps, steps }: FormProgressPro
         })}
       </div>
 
-      {/* Progresso mobile */}
-      <div className="sm:hidden mt-3 flex items-center justify-between text-xs text-muted-foreground">
-        <span className="font-medium text-brand-navy">{steps[currentStep - 1]}</span>
-        <span>{currentStep} de {totalSteps}</span>
+      <div className="sm:hidden mt-3 flex items-center justify-between">
+        <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: "var(--fb-red)" }}>
+          {steps[currentStep - 1]}
+        </span>
+        <span className="text-xs" style={{ color: "var(--fb-slate-gray)" }}>{currentStep} de {totalSteps}</span>
       </div>
     </div>
   );

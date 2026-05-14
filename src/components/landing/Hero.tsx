@@ -1,64 +1,68 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, CheckCircle2, FileText, Clock, Shield } from "lucide-react";
+import { ArrowRight, CheckCircle2, Clock, Shield } from "lucide-react";
 
 export const Hero = () => (
-  <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center py-12 px-4">
+  <div className="min-h-screen flex items-center justify-center py-16 px-6" style={{ background: "var(--fb-light-gray)" }}>
     <div className="w-full max-w-md mx-auto">
+
       {/* Logo */}
-      <div className="text-center mb-8">
-        <div className="flex justify-center mb-4">
-          <img
-            src="/logo-filtros-brasil.svg"
-            alt="Filtros Brasil"
-            className="h-12 w-auto"
-          />
-        </div>
-        <div className="w-12 h-0.5 bg-brand-red mx-auto mb-3 rounded-full" />
-        <p className="text-muted-foreground">Portal de Cadastro de Fornecedores</p>
+      <div className="text-center mb-10">
+        <img src="/logo-filtros-brasil.svg" alt="Filtros Brasil" className="h-10 w-auto mx-auto mb-6" />
+        <div className="w-10 h-0.5 mx-auto mb-4" style={{ background: "var(--fb-red)" }} />
+        <p className="text-[11px] font-semibold uppercase tracking-widest" style={{ color: "var(--fb-slate-gray)" }}>
+          Portal de Cadastro de Fornecedores
+        </p>
       </div>
 
       {/* Card */}
-      <div className="bg-white rounded-2xl border shadow-xl p-8 space-y-6">
-        <div className="text-center">
-          <div className="w-14 h-14 bg-brand-navy rounded-xl flex items-center justify-center mx-auto mb-4">
-            <FileText className="h-7 w-7 text-white" />
-          </div>
-          <h1 className="text-xl font-semibold text-brand-navy">Cadastro de Fornecedores</h1>
-          <p className="text-sm text-muted-foreground mt-1.5">
-            Preencha o formulário para iniciar sua qualificação como fornecedor.
-          </p>
-        </div>
+      <div className="bg-white rounded-lg p-8" style={{ boxShadow: "var(--fb-shadow-floating)", border: "1px solid var(--fb-mid-gray)" }}>
+        <h1 className="text-2xl font-bold uppercase tracking-tight mb-2" style={{ color: "var(--fb-blue)", fontSize: "22px" }}>
+          Cadastro de Fornecedores
+        </h1>
+        <p className="text-sm mb-6 leading-relaxed" style={{ color: "var(--fb-slate-gray)" }}>
+          Preencha o formulário para iniciar sua qualificação como fornecedor oficial da Filtros Brasil.
+        </p>
 
-        <div className="space-y-2.5">
+        <div className="space-y-3 mb-7 p-4 rounded-md" style={{ background: "var(--fb-light-gray)" }}>
           {[
             { icon: CheckCircle2, text: "Processo 100% online e gratuito" },
-            { icon: Clock, text: "Análise em até 5 dias úteis" },
-            { icon: Shield, text: "Dados protegidos e confidenciais" },
+            { icon: Clock,        text: "Análise em até 5 dias úteis" },
+            { icon: Shield,       text: "Dados protegidos e confidenciais" },
           ].map(({ icon: Icon, text }) => (
-            <div key={text} className="flex items-center gap-3 text-sm text-muted-foreground">
-              <Icon className="h-4 w-4 text-brand-red flex-shrink-0" />
-              <span>{text}</span>
+            <div key={text} className="flex items-center gap-3">
+              <Icon className="h-4 w-4 flex-shrink-0" style={{ color: "var(--fb-red)" }} />
+              <span className="text-sm" style={{ color: "var(--fb-dark-gray)" }}>{text}</span>
             </div>
           ))}
         </div>
 
         <Link
           to="/cadastro"
-          className="flex items-center justify-center gap-2 w-full py-3.5 rounded-lg bg-brand-red hover:bg-brand-red/90 text-white font-semibold text-sm transition-colors"
+          className="flex items-center justify-center gap-2 w-full py-3.5 rounded-pill font-semibold text-xs uppercase tracking-widest text-white transition-all"
+          style={{
+            background: "var(--fb-red)",
+            borderRadius: "9999px",
+            letterSpacing: "0.08em",
+          }}
+          onMouseEnter={e => { (e.target as HTMLElement).style.background = "#C2000D"; }}
+          onMouseLeave={e => { (e.target as HTMLElement).style.background = "var(--fb-red)"; }}
         >
           Iniciar Cadastro
           <ArrowRight className="h-4 w-4" />
         </Link>
 
-        <div className="pt-4 border-t text-center">
-          <Link to="/admin" className="text-xs text-muted-foreground hover:text-brand-navy transition-colors">
-            Acesso administrativo
+        <div className="pt-5 mt-5 text-center" style={{ borderTop: "1px solid var(--fb-mid-gray)" }}>
+          <Link to="/admin" className="text-[11px] font-semibold uppercase tracking-widest transition-colors hover:underline" style={{ color: "var(--fb-slate-gray)" }}>
+            Acesso Administrativo
           </Link>
         </div>
       </div>
 
-      <p className="text-center text-xs text-muted-foreground mt-6">
-        Dúvidas? <a href="mailto:compras@filtrosbrasil.com.br" className="text-brand-navy font-medium hover:underline">compras@filtrosbrasil.com.br</a>
+      <p className="text-center text-xs mt-6" style={{ color: "var(--fb-slate-gray)" }}>
+        Dúvidas?{" "}
+        <a href="mailto:compras@filtrosbrasil.com.br" className="font-semibold hover:underline" style={{ color: "var(--fb-blue)" }}>
+          compras@filtrosbrasil.com.br
+        </a>
       </p>
     </div>
   </div>

@@ -1,180 +1,78 @@
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { FornecedorFormData } from '@/types/fornecedor';
 import { cn } from '@/lib/utils';
 import { Package, Wrench } from 'lucide-react';
 
-interface StepDadosFornecedorProps {
-  formData: FornecedorFormData;
-  onChange: (field: keyof FornecedorFormData, value: string) => void;
-  errors: Record<string, string>;
-}
+interface Props { formData: FornecedorFormData; onChange: (f: keyof FornecedorFormData, v: string) => void; errors: Record<string, string>; }
 
-function formatCNPJ(value: string): string {
-  const numbers = value.replace(/\D/g, '');
-  const limited = numbers.slice(0, 14);
-  return limited
-    .replace(/^(\d{2})(\d)/, '$1.$2')
-    .replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3')
-    .replace(/\.(\d{3})(\d)/, '.$1/$2')
-    .replace(/(\d{4})(\d)/, '$1-$2');
-}
+const formatCNPJ = (v: string) => v.replace(/\D/g,'').slice(0,14).replace(/^(\d{2})(\d)/,'$1.$2').replace(/^(\d{2})\.(\d{3})(\d)/,'$1.$2.$3').replace(/\.(\d{3})(\d)/,'.$1/$2').replace(/(\d{4})(\d)/,'$1-$2');
+const formatTel = (v: string) => { const n = v.replace(/\D/g,'').slice(0,11); return n.length<=10 ? n.replace(/^(\d{2})(\d)/,'($1) $2').replace(/(\d{4})(\d)/,'$1-$2') : n.replace(/^(\d{2})(\d)/,'($1) $2').replace(/(\d{5})(\d)/,'$1-$2'); };
+const RAMOS = ['Indústria','Comércio','Serviços','Agronegócio','Tecnologia','Outro'];
 
-function formatTelefone(value: string): string {
-  const numbers = value.replace(/\D/g, '');
-  const limited = numbers.slice(0, 11);
-  if (limited.length <= 10) {
-    return limited
-      .replace(/^(\d{2})(\d)/, '($1) $2')
-      .replace(/(\d{4})(\d)/, '$1-$2');
-  }
-  return limited
-    .replace(/^(\d{2})(\d)/, '($1) $2')
-    .replace(/(\d{5})(\d)/, '$1-$2');
-}
+const inputStyle = { border: "1px solid var(--fb-mid-gray)", borderRadius: "4px", fontFamily: "'AmpleSoft', sans-serif", fontSize: "14px", color: "var(--fb-dark-gray)" };
+const labelStyle = { fontSize: "11px", fontWeight: 600, textTransform: "uppercase" as const, letterSpacing: "0.05em", color: "var(--fb-blue)", marginBottom: "6px" };
 
-const RAMOS = ['Indústria', 'Comércio', 'Serviços', 'Agronegócio', 'Tecnologia', 'Outro'];
-
-export function StepDadosFornecedor({ formData, onChange, errors }: StepDadosFornecedorProps) {
-  const handleCNPJChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onChange('cnpj', formatCNPJ(e.target.value));
-  };
-
-  const handleTelefoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onChange('telefone', formatTelefone(e.target.value));
-  };
-
-  const tipoOptions = [
-    { value: 'MATERIAIS', label: 'Materiais', icon: Package, desc: 'Fornecimento de produtos físicos' },
-    { value: 'SERVIÇOS', label: 'Serviços', icon: Wrench, desc: 'Prestação de serviços' },
-  ];
-
+export function StepDadosFornecedor({ formData, onChange, errors }: Props) {
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       <div>
-        <h3 className="text-base font-semibold text-foreground">Dados da empresa</h3>
-        <p className="text-sm text-muted-foreground mt-0.5">Informações básicas para identificação do fornecedor</p>
+        <h3 className="font-bold uppercase tracking-tight mb-1" style={{ fontSize: "15px", color: "var(--fb-blue)" }}>Dados da Empresa</h3>
+        <p className="text-xs" style={{ color: "var(--fb-slate-gray)" }}>Informações básicas para identificação do fornecedor</p>
       </div>
 
-      {/* Tipo de fornecedor — cards clicáveis */}
       <div className="space-y-2">
-        <Label>
-          Tipo de fornecedor <span className="text-destructive">*</span>
-        </Label>
+        <label style={labelStyle}>Tipo de Fornecedor <span style={{ color: "var(--fb-red)" }}>*</span></label>
         <div className="grid grid-cols-2 gap-3">
-          {tipoOptions.map(({ value, label, icon: Icon, desc }) => (
-            <button
-              key={value}
-              type="button"
-              onClick={() => onChange('tipo_fornecedor', value)}
-              className={cn(
-                'flex items-start gap-3 p-4 rounded-lg border-2 text-left transition-all duration-150',
-                formData.tipo_fornecedor === value
-                  ? 'border-brand-navy bg-brand-navy/5'
-                  : 'border-border hover:border-brand-navy/40 hover:bg-muted/50'
-              )}
-            >
-              <div className={cn(
-                'w-8 h-8 rounded-md flex items-center justify-center flex-shrink-0 mt-0.5',
-                formData.tipo_fornecedor === value ? 'bg-brand-navy text-white' : 'bg-muted text-muted-foreground'
-              )}>
-                <Icon className="w-4 h-4" />
-              </div>
-              <div>
-                <p className={cn(
-                  'text-sm font-semibold',
-                  formData.tipo_fornecedor === value ? 'text-brand-navy' : 'text-foreground'
-                )}>
-                  {label}
-                </p>
-                <p className="text-xs text-muted-foreground mt-0.5">{desc}</p>
-              </div>
-            </button>
-          ))}
+          {[{ v:'MATERIAIS', l:'Materiais', desc:'Produtos físicos', icon: Package }, { v:'SERVIÇOS', l:'Serviços', desc:'Prestação de serviços', icon: Wrench }].map(({ v, l, desc, icon: Icon }) => {
+            const sel = formData.tipo_fornecedor === v;
+            return (
+              <button key={v} type="button" onClick={() => onChange('tipo_fornecedor', v)}
+                className="flex items-start gap-3 p-4 text-left transition-all"
+                style={{ border: `2px solid ${sel ? "var(--fb-red)" : "var(--fb-mid-gray)"}`, borderRadius: "8px", background: sel ? "rgba(227,0,15,0.03)" : "#fff" }}>
+                <div className="w-8 h-8 rounded flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: sel ? "var(--fb-red)" : "var(--fb-light-gray)" }}>
+                  <Icon className="w-4 h-4" style={{ color: sel ? "#fff" : "var(--fb-slate-gray)" }} />
+                </div>
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-wider" style={{ color: sel ? "var(--fb-red)" : "var(--fb-blue)" }}>{l}</p>
+                  <p className="text-xs mt-0.5" style={{ color: "var(--fb-slate-gray)" }}>{desc}</p>
+                </div>
+              </button>
+            );
+          })}
         </div>
-        {errors.tipo_fornecedor && (
-          <p className="text-sm text-destructive">{errors.tipo_fornecedor}</p>
-        )}
+        {errors.tipo_fornecedor && <p className="text-xs" style={{ color: "var(--fb-error)" }}>{errors.tipo_fornecedor}</p>}
       </div>
 
-      {/* E-mail */}
-      <div className="space-y-2">
-        <Label htmlFor="email">
-          E-mail <span className="text-destructive">*</span>
-        </Label>
-        <Input
-          id="email"
-          type="email"
-          value={formData.email}
-          onChange={(e) => onChange('email', e.target.value)}
-          className={cn(errors.email && 'border-destructive focus-visible:ring-destructive')}
-          placeholder="contato@empresa.com.br"
-        />
-        {errors.email && <p className="text-sm text-destructive">{errors.email}</p>}
+      <div className="space-y-1.5">
+        <label style={labelStyle}>E-mail <span style={{ color: "var(--fb-red)" }}>*</span></label>
+        <Input type="email" value={formData.email} onChange={e => onChange('email', e.target.value)} placeholder="contato@empresa.com.br" style={{ ...inputStyle, borderColor: errors.email ? "var(--fb-error)" : "var(--fb-mid-gray)" }} />
+        {errors.email && <p className="text-xs" style={{ color: "var(--fb-error)" }}>{errors.email}</p>}
       </div>
 
-      {/* CNPJ + Telefone */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <Label htmlFor="cnpj">
-            CNPJ <span className="text-destructive">*</span>
-          </Label>
-          <Input
-            id="cnpj"
-            value={formData.cnpj}
-            onChange={handleCNPJChange}
-            className={cn(errors.cnpj && 'border-destructive focus-visible:ring-destructive')}
-            placeholder="00.000.000/0000-00"
-            maxLength={18}
-          />
-          {errors.cnpj && <p className="text-sm text-destructive">{errors.cnpj}</p>}
+      <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-1.5">
+          <label style={labelStyle}>CNPJ <span style={{ color: "var(--fb-red)" }}>*</span></label>
+          <Input value={formData.cnpj} onChange={e => onChange('cnpj', formatCNPJ(e.target.value))} placeholder="00.000.000/0000-00" maxLength={18} style={{ ...inputStyle, borderColor: errors.cnpj ? "var(--fb-error)" : "var(--fb-mid-gray)" }} />
+          {errors.cnpj && <p className="text-xs" style={{ color: "var(--fb-error)" }}>{errors.cnpj}</p>}
         </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="telefone">Telefone</Label>
-          <Input
-            id="telefone"
-            value={formData.telefone}
-            onChange={handleTelefoneChange}
-            placeholder="(00) 00000-0000"
-            maxLength={15}
-          />
+        <div className="space-y-1.5">
+          <label style={labelStyle}>Telefone</label>
+          <Input value={formData.telefone} onChange={e => onChange('telefone', formatTel(e.target.value))} placeholder="(00) 00000-0000" maxLength={15} style={inputStyle} />
         </div>
       </div>
 
-      {/* Razão social */}
-      <div className="space-y-2">
-        <Label htmlFor="razao_social">Razão social</Label>
-        <Input
-          id="razao_social"
-          value={formData.razao_social}
-          onChange={(e) => onChange('razao_social', e.target.value)}
-          placeholder="Nome completo da empresa"
-        />
+      <div className="space-y-1.5">
+        <label style={labelStyle}>Razão Social</label>
+        <Input value={formData.razao_social} onChange={e => onChange('razao_social', e.target.value)} placeholder="Nome completo da empresa" style={inputStyle} />
       </div>
 
-      {/* Ramo de atuação */}
-      <div className="space-y-2">
-        <Label htmlFor="ramo_atuacao">Ramo de atuação</Label>
-        <Select
-          value={formData.ramo_atuacao || ''}
-          onValueChange={(value) => onChange('ramo_atuacao', value)}
-        >
-          <SelectTrigger id="ramo_atuacao">
-            <SelectValue placeholder="Selecione o ramo" />
-          </SelectTrigger>
-          <SelectContent>
-            {RAMOS.map((r) => (
-              <SelectItem key={r} value={r}>{r}</SelectItem>
-            ))}
-          </SelectContent>
+      <div className="space-y-1.5">
+        <label style={labelStyle}>Ramo de Atuação</label>
+        <Select value={formData.ramo_atuacao || ''} onValueChange={v => onChange('ramo_atuacao', v)}>
+          <SelectTrigger style={inputStyle}><SelectValue placeholder="Selecione o ramo" /></SelectTrigger>
+          <SelectContent>{RAMOS.map(r => <SelectItem key={r} value={r}>{r}</SelectItem>)}</SelectContent>
         </Select>
       </div>
     </div>
